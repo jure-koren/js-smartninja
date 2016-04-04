@@ -1,0 +1,26 @@
+debugger;
+
+var besede[];
+besede.push("miza");
+besede.push("stol");
+besede.push("raèunalnik");
+besede.push("luè");
+besede.push("okno");
+
+var uganil=false;
+
+// izberemo eno besedo
+var iskanaBeseda =  besede[Math.floor(Math.random()*besede.length)];
+
+
+
+vpisaneCrke="";
+
+while (!uganil) {
+  crka = prompt('Vpiši èrko:');
+  
+  
+  
+  
+  
+}

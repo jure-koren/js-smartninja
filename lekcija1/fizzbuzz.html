@@ -1,0 +1,96 @@
+<html>
+<script>
+
+
+var meja = prompt('Vpiši število');
+console.log(meja);
+
+  function fizzBuzz(meja) 
+  {
+    
+  for(var i = 1; i <= meja; i++) {
+    
+    
+
+    
+    if (i % 3 == 0 && i % 5 == 0) {
+      console.log(i + "fizzbuzzz (deljivo s 3 in 5)");
+    } 
+    else if (i % 3 == 0) {
+      console.log(i + "fizz (deljivo s 3)");
+    }
+    else if (i % 5 == 0) {
+      console.log(i + "buzz (deljivo s 5)");
+    } 
+    else {
+      console.log("" + i);
+    }
+
+  }
+  
+}
+
+fizzBuzz(meja);
+
+
+
+
+
+
+
+var zgornjaMeja = 100;
+var stevilka = Math.floor((Math.random() * zgornjaMeja) + 0);
+
+console.log("Skrita številka: " + stevilka);
+var uganil = false;
+while (!uganil) {
+  var poskus = prompt('Vpiši število');
+  console.log(poskus);
+  if (poskus == stevilka) {
+    uganil = true;
+    alert("Bravo!");
+  } else if (poskus < stevilka) {
+    alert("Vpiši veèjo številko!");
+  } else if (poskus > stevilka) {
+    alert("Vpiši manjšo številko!");
+  }
+  
+}
+
+
+
+
+
+
+var zgornjaMeja = 100;
+var spodnjaMeja = 1;
+
+spodnjaMeja = prompt('Spodnja meja:');
+zgornjaMeja = prompt('Zgornja meja:');
+
+var stevilka = Math.floor((Math.random() * zgornjaMeja) + spodnjaMeja);
+
+console.log("Skrita številka: " + stevilka);
+
+var poskusov = 0;
+var uganil = false;
+
+while (!uganil) {
+  poskusov++;
+  var poskus = prompt(poskusov + ') Poskusi uganiti številko:');
+  console.log(poskus);
+  if (poskus == stevilka) {
+    uganil = true;
+    alert("Bravo! Uspel si v " + poskusov + " poskusu");
+  } else if (poskus < stevilka) {
+    alert("Vpiši veèjo številko!");
+  } else if (poskus > stevilka) {
+    alert("Vpiši manjšo številko!");
+  }
+  
+}
+
+
+
+</script>
+</html>
