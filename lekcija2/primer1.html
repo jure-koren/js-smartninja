@@ -1,0 +1,47 @@
+<html>
+
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+
+</head>
+
+<body ng-app="app">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 well">
+        <h1>AngularJS </h1>
+
+        <!-- Ng-model -->
+        <input type="text" class="form-control" 
+               ng-model="name"/>
+        
+        <p>{{ name }}</p>
+        
+        <!-- ng-show, ng-hide -->
+        <br />
+        <input type="checkbox" ng-model="showMe" />
+        <p>{{ showMe }}</p>
+        
+        <div class="well" ng-show="showMe">
+          Viden sem (ng-show)!
+        </div>
+        
+        <div class="well" ng-hide="showMe">
+          Viden sem (ng-hide)!
+        </div>
+        
+        <!-- ng-if -->
+        <div class="well" ng-if="showMe">
+          Viden sem (ng-if)
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
