@@ -1,0 +1,46 @@
+<html>
+<head>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  </head>
+<body ng-app="app">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 well">
+        <h2>http://codepen.io/aweCodeMan/pen/mPpReE</h2>
+        
+        <form name="exampleForm">
+        
+       <!-- <input name="body" ng-model="body" type="text" class="form-control" />
+          
+          <pre>{{ exampleForm.body.$viewValue }}</pre>   -->  
+          
+         <!--     <div ng-init="array = ['Miha', 'Tone']">
+            
+            <select ng-options="item for item in array" ng-model="selectedItem"></select>
+          
+            <p>{{ selectedItem }}</p>
+            
+          </div> 
+           -->
+          <div ng-init="persons = [{name : 'Miha', age: 27}, {name: 'Tone', age: 30}]">
+            
+            <select ng-options="(item.name + '(' + item.age + ')') for item in persons" ng-model="selectedItem"></select>
+          
+            <p>{{ selectedItem }}</p>
+            
+          </div>
+          
+        </form>
+        
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>
