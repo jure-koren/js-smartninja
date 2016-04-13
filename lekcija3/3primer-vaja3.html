@@ -1,0 +1,165 @@
+<html>
+<head>
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  </head>
+<body ng-app="app">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 well">
+        <h2>http://codepen.io/aweCodeMan/pen/mPpReE</h2>
+        
+        <form name="exampleForm" ng-controller="MainController" novalidate>
+          
+<div ng-init="">
+  
+  <p>Prosim, izberite obrazec:</p>
+  <select ng-options="item.name for item in obrazci" 
+          ng-model="selectedItem" 
+          ng-required="true"
+          
+          ></select>
+  <h2>{{selectedItem.name}}</h2>
+  
+  <div ng-model="obrazec1" ng-if="selectedItem.name=='Povpraševanje'">
+    <p>Ime in priimek:</p>
+          <input name="stranka" ng-model="stranka" type="text" class="form-control" ng-minlength="4"
+                 ng-required="true"
+                 ng-maxlength="60"
+                 ng-trim="true"
+                 />
+   <p>email:</p>
+              <input name="email" ng-model="email" type="text" class="form-control" ng-minlength="4"
+                 ng-required="true"
+                 ng-maxlength="60"
+                 ng-trim="true"
+                 ng-pattern="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"/>
+    
+    
+    
+  </div>
+  
+ 
+  <div ng-model="obrazec1" ng-if="selectedItem.name=='Obrazec'">
+       <p>Ime in priimek:</p>
+          <input name="stranka" ng-model="stranka" type="text" class="form-control" ng-minlength="4"
+                 ng-required="true"
+                 ng-maxlength="60"
+                 ng-trim="true"
+                 />
+  </div>
+  
+   <div ng-model="obrazec1" ng-if="selectedItem.name=='Gremo na pivo'">
+       <p>Ime in priimek:</p>
+          <input name="stranka" ng-model="stranka" type="text" class="form-control" ng-minlength="4"
+                 ng-required="true"
+                 ng-maxlength="60"
+                 ng-trim="true"
+                 />
+     
+         Gremo?:
+         <input type="checkbox" ng-model="gremoNaPivo" />
+  </div> 
+  
+     <p>Besedilo:</p>
+          <textarea name="besedilo" ng-model="besedilo" type="text" class="form-control"                minlength="2"
+                 ng-required="true"
+                 ng-trim="true" >
+          </textarea>
+
+  <div ng-model="obrazec1" ng-if="exampleForm.$valid">
+    Ok, lahko pošljemo obrazec: 
+    <button class="btn btn-primary" 
+            ng-click="preveriInPosljiObrazec()">Pošlji</button>
+  </div>
+  <div ng-model="obrazec1" ng-if="!exampleForm.$valid">
+    Prosim, vnesite vrednosti v polja obrazca.
+  </div>  
+  
+ 
+  
+  <p>Debug:</p>
+  <pre>form.$valid: {{ exampleForm.$valid }}</pre>
+</div>
+        
+       <!-- <input name="body" ng-model="body" type="text" class="form-control" />
+          
+          <pre>{{ exampleForm.body.$viewValue }}</pre>   -->  
+          
+         <!--     <div ng-init="array = ['Miha', 'Tone']">
+            
+            <select ng-options="item for item in array" ng-model="selectedItem"></select>
+          
+            <p>{{ selectedItem }}</p>
+            
+          </div> 
+           -->
+         <!--   <div ng-init="persons = [{name : 'Miha', age: 27}, {name: 'Tone', age: 30}]">
+            
+            <select ng-options="item.name for item in persons" ng-model="selectedItem"></select>
+          
+            <p>{{ selectedItem }}</p>
+            
+          </div>
+
+
+-->
+
+          
+          <!-- Watch -->
+       <!--     <input type="text" ng-model="watchMe" class="form-control" ng-change="onChange(watchMe)"/> -->
+          
+          <!-- Validacija -->
+             
+         <!--   <p>Required</p>
+          <input name="require" ng-model="require" type="text" class="form-control" ng-required="true" /> -->
+          <!--  
+          <p>Min length - Max length</p>
+          <input name="minLength" ng-model="minLength" type="text" class="form-control" ng-minlength="3"
+                 ng-required="true"
+                 ng-maxlength="6"
+                 ng-trim="true"
+                 ng-pattern="/^\d+$/"/>
+          
+          <p ng-if="exampleForm.minLength.$error.required && exampleForm.minLength.$dirty">
+            Prosim nekaj vpiši.
+          </p>
+          <p ng-if="exampleForm.minLength.$error.pattern">
+            Prosim vpiši številko.
+          </p>
+          
+          <pre>Error: {{ exampleForm.minLength.$error  }}
+          Valid: {{ exampleForm.minLength.$valid  }}</pre>
+          <pre>{{ minLength }}</pre>
+            <pre>{{ exampleForm.minLength.$viewValue }}</pre> 
+          <pre>form.$valid: {{ exampleForm.$valid }}</pre>
+-->
+          
+          <!-- Filtri -->
+          <!--
+          <p>Filtri:</p>
+
+          <input type="number" ng-model="money " class="form-control" />
+          <p>{{ money | currency: '€': 2}}</p>
+          
+          <p>Date</p>
+           <p>{{ 1460043853141 | date: 'MMM d, y h:mm:ss a' }}</p>
+          
+          <p>Number:</p>
+          <input type="number" class="form-control" ng-model="number" />
+          <p>{{ number | number: 3}}</p>
+
+!-->
+        </form>
+        
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

@@ -25,13 +25,15 @@ angular.module('app').controller('MainController', function($scope, $timeout, $q
   var maxCas = 5;  // največ sekund
   var stevilk = 3; // koliko jih izžrebamo naenkrat
   var vse_izzrebane = []; // katere smo do sedaj izžrebali
+  var min = 1;
+  var max = 100;
   
   $scope.mylog = "Pripravljen.";
   
   /*
    * izžrebamo naslednjo številko, izžrebane ne ponavljamo
    */
-  function izzrebaj_naslednjo_stevilko (min=1, max=100) {
+  function izzrebaj_naslednjo_stevilko () {
     console.log("izzrebaj_naslednjo_stevilko: meje: "+min+"..."+max+"");
     console.log("izzrebaj_naslednjo_stevilko: vse_izzrebane: "+vse_izzrebane);
     // tu bo rezultat
@@ -73,46 +75,7 @@ angular.module('app').controller('MainController', function($scope, $timeout, $q
   function isInArray(value, array) {
     return array.indexOf(value) > -1;
   }
-
-  /*
-   * malo pocakamo
-   */
-  function wait(ms){
-     var start = new Date().getTime();
-     var end = start;
-     while(end < start + ms) {
-       end = new Date().getTime();
-    }
-  }
   
-  $scope.izzrebaj = function (koliko_stevilk) {
-    $scope.mylog += "\nZačnemo z žrebanjem. Čakam na podkupnino...";
-    
-    var skupajCas = 0;
-    
-    for (j = 1; j <= koliko_stevilk; j++) {
-      
-      var cas = Math.floor(Math.random() * maxCas) + minCas;
-      console.log(j + ") Čas: " + cas + "");
-      
-      skupajCas += cas;
-      
-      setTimeout(function(){
-          $scope.mylog += "\n- Žrebam ...";
-          
-          var nova_stevilka = izzrebaj_naslednjo_stevilko ();
-          
-          $scope.izzrebane = vse_izzrebane;
-          $scope.mylog += nova_stevilka;
-          $scope.$apply();
-          
-      }, skupajCas*1000);
-      
-      
-    }
-    
-    
-  };
   
   /*
    * izžrebamo novo številko čez naključno sekund
@@ -123,7 +86,7 @@ angular.module('app').controller('MainController', function($scope, $timeout, $q
       var cas = Math.floor(Math.random() * maxCas) + minCas;
       console.log("izzrebaj_naslednjo_stevilko_potem: timeout bo: " + cas);
       
-      var prom = $timeout(izzrebaj_naslednjo_stevilko_in_prikazi(), (cas*1000) );
+      var prom = $timeout(izzrebaj_naslednjo_stevilko_in_prikazi, (cas*1000) );
       console.log("izzrebaj_naslednjo_stevilko_potem: ok, vrnemo prom.");
       
       return prom;
@@ -135,7 +98,6 @@ angular.module('app').controller('MainController', function($scope, $timeout, $q
   function izzrebaj_naslednjo_stevilko_in_prikazi() {
       nova_stevilka = izzrebaj_naslednjo_stevilko();
       $scope.izzrebane = vse_izzrebane;
-      $scope.mylog += nova_stevilka;
       
       return nova_stevilka;
   }
@@ -145,13 +107,18 @@ angular.module('app').controller('MainController', function($scope, $timeout, $q
     console.log("izzrebajDefer: žrebamo številke: " + koliko_stevilk + ", naredimo promise...");
     $scope.mylog += "\n- Čakam na podkupnine...";
     
-    var promises = [];
+    var times = [];
     for (j = 1; j <= koliko_stevilk; j++) {
-      $scope.mylog += "\n- Žreb..." + j;
+      //$scope.mylog += "\n- Žreb..." + j;
       console.log("izzrebajDefer: žrebamo številke: " + j + ":");
-      var promise = izzrebaj_naslednjo_stevilko_potem ();
-      promise.then(function(stevilka) {
-        $scope.mylog += "\n- Žreb je bil uspešen.";
+      var start = new Date().getTime();
+      times[j] = start;
+      
+      izzrebaj_naslednjo_stevilko_potem().then(function(stevilka) {
+        var end = new Date().getTime();
+        var time = end - start;    
+            
+        $scope.mylog += "\n- Žreb je bil uspešen: " + stevilka + ", trajanje: " + (time/1000) + " s";
         return stevilka;
       }, function(stevilka) {
         $scope.mylog += "\n- Guru meditation error!";
@@ -196,6 +163,7 @@ angular.module('app').controller('MainController', function($scope, $timeout, $q
               padding: 1em;
               line-height: 5em;
               vertical-align: middle;
+              background-color: lightyellow;
               ">
                 {{ stevilka }}
               </div>
