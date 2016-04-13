@@ -1,0 +1,140 @@
+<html>
+<head><title>AngularJS</title>
+      <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+<script>
+
+/*
+
+Bulgarska loterija vas najame, da jim izdelate program, ki bo naključno izžrebal tri številke od 1 do 100.
+Ker morajo zadostiti zakonskim omejitvam, mora vsako žrebanje številke potekati naključno časa (med 2 - 5 sekund).
+Ko se ena številka izžreba, se lahko šele naslednja začne žrebati.
+Številke se ne smejo ponoviti.
+Program mora izpisati vsako izžrebano številko, ko se ta izžreba ter koliko časa je žreb številke potekal. 
+
+ */
+
+angular.module('app', []);
+
+angular.module('app').controller('MainController', function($scope){
+  
+  var stevilk = 3; // koliko jih izžrebamo naenkrat
+  var vse_izzrebane = []; // katere smo do sedaj izžrebali
+  
+  $scope.mylog = "Pripravljen.";
+  
+  /*
+   * izžrebamo naslednjo številko, izžrebane ne ponavljamo
+   */
+  function izzrebaj_naslednjo_stevilko (min=1, max=100) {
+    console.log("izzrebaj_naslednjo_stevilko: meje: "+min+"..."+max+"");
+    console.log("izzrebaj_naslednjo_stevilko: vse_izzrebane: "+vse_izzrebane);
+    // tu bo rezultat
+    var stevilka = null;
+    
+    // štopamo čas izvedbe
+    //var start = new Date().getTime();
+    var i = 0;
+    while (stevilka == null) {
+        // si izmislimo številko
+        var nova_stevilka = Math.floor(Math.random() * max) + min;
+        console.log("izzrebaj_naslednjo_stevilko: nova_stevilka: "+nova_stevilka);
+        
+        // pogledamo, če je že med izžrebanimi
+        if (!isInArray(nova_stevilka, vse_izzrebane)) {
+          // še ni v izzrebanih, dodamo
+          console.log("izzrebaj_naslednjo_stevilko: nova_stevilka: ok, še nimamo");
+          vse_izzrebane.push(nova_stevilka);
+          stevilka = nova_stevilka;
+          break;
+        }
+        
+        // za rezervo, da ne gremo v neskončnost, če ne najdemo številke
+        i++;
+        if (i >= max) {
+          break;
+        }
+    }
+    
+    return stevilka;
+  }
+  
+  /*
+   * ali je element v arrayju
+   */
+  function isInArray(value, array) {
+    return array.indexOf(value) > -1;
+  }
+
+  /*
+   * malo pocakamo
+   */
+  function wait(ms){
+     var start = new Date().getTime();
+     var end = start;
+     while(end < start + ms) {
+       end = new Date().getTime();
+    }
+  }  
+  
+  $scope.izzrebaj = function (koliko_stevilk) {
+    $scope.mylog += "\nŽrebam številke...";
+    
+    var minCas = 2;
+    var maxCas = 5;
+    var skupajCas = 0;
+    
+    for (j = 1; j <= koliko_stevilk; j++) {
+      
+      var cas = Math.floor(Math.random() * maxCas) + minCas;
+      
+      $scope.mylog += "\n" + j + ") Žrebam (" + Math.floor(cas) + " s)...";
+      
+      skupajCas += cas;
+      
+      setTimeout(function(){
+          console.log("setTimeout: timeout " + skupajCas + "...");
+        
+          var nova_stevilka = izzrebaj_naslednjo_stevilko ();
+          console.log("setTimeout: result " + nova_stevilka + "");
+          
+          $scope.izzrebane = vse_izzrebane;
+          $scope.mylog += nova_stevilka;
+          
+      }, (skupajCas*1000));
+      
+      
+    }
+    
+    
+  };
+
+  
+});
+ 
+
+</script>
+</head>
+<body ng-app="app">
+  <div class="container">
+
+        <h2>Bolgarska loterija</h2>
+        
+        <form name="exampleForm" ng-controller="MainController" novalidate>
+        
+          <h3>Do sedaj izžrebane številke: </h3>
+          <h2>{{ izzrebane }}</h2>
+          
+          <button class="btn btn-primary" ng-click="izzrebaj(3)">Izžrebaj 3 številke</button>
+          
+          <p>Log:</p>
+          
+          <pre>{{ mylog }}</pre>
+        
+        </form>
+        
+  </div>
+</body>
+</html>
