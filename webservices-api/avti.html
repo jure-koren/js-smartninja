@@ -19,11 +19,14 @@ Naloga: avtomobilsko podjetje CMW (35min)
 
 angular.module('app', []);
 
-angular.module('app').controller('MainController', function($scope, $timeout, $http, $q){
+angular.module('app').controller('MainController', function($scope, $timeout, $http, $q, transformRequestAsFormPost){
   
   console.log("avti..");
   
-  $scope.mylog = 'Pripravljen.';
+  $scope.mylog = "Pripravljen.";
+  
+  $scope.izbraniAvto = "";
+  $scope.izbraniTermin = "";
   
   $scope.cars = ['Ni avtomobilov'];
   $scope.timeslots = ['Ni terminov'];
@@ -53,7 +56,9 @@ angular.module('app').controller('MainController', function($scope, $timeout, $h
       });
   }
 
-  
+  /*
+   * nalozimo vse
+   */
   $scope.nalozi = function () {
       console.log("load Data...");
       loadCars();
@@ -61,13 +66,49 @@ angular.module('app').controller('MainController', function($scope, $timeout, $h
       console.log("load Data...OK");
   }
 
+  /*
+   * izberemo avto
+   */
   $scope.izberiAvto = function (id) {
       console.log("izberiAvto..." + id);
-      loadCars();
-      loadTimeslots();
+      $scope.mylog += "\nIzberemo avto: " + id;
+      $scope.izbraniAvto = id;
       console.log("izberiAvto...OK");
   }
+
+   /*
+   * izberemo termin
+   */
+  $scope.izberiTermin = function (id) {
+      console.log("izberiTermin..." + id);
+      $scope.mylog += "\nIzberemo termin: " + id;
+      $scope.izbraniTermin = id;
+      console.log("izberiTermin...OK");
+  }
   
+  /*
+   * posljemo rezervacijo
+   */
+  $scope.rezervirajTermin = function (termin, email) {  
+      $scope.cfdump = "";
+      var request = $http({
+          method: "post",
+          url: "http://smartninja.betoo.si/api/CMW/reservations",
+          transformRequest: transformRequestAsFormPost,
+          data: {
+              id: termin,
+              email: "email",
+          }
+      });
+      request.success(
+          function( html ) {
+              $scope.cfdump = html;
+          }
+      );  
+  }
+  
+  
+  // na zecetku nalozimo podatke
   $scope.mylog = 'Nalagam podatke iz strežnika...';
       loadCars();
       loadTimeslots();  
@@ -84,24 +125,67 @@ angular.module('app').controller('MainController', function($scope, $timeout, $h
 
         <h2>CMW Avtohiša</h2>
         
-        <form name="exampleForm" ng-controller="MainController" novalidate>
+        <form name="exampleForm" ng-controller="MainController" novalidate action="http://smartninja.betoo.si/api/CMW/reservations" method="post">
                  
-          <pre>{{ cars }}</pre>
-          <pre>{{ timeslots }}</pre>
+          <!-- {{ cars }} !-->
+          <!-- {{ timeslots }} !-->
           
-          <button class="btn btn-primary" ng-click="nalozi()">Naloži podatke</button>
+          <button class="btn btn-primary" ng-click="nalozi()" style="display:none">Naloži podatke</button>
         
-          <h3>Izberite avto, ki vas zanima: </h3>
+          <h3 ng-if="!izbraniAvto>0">Izberite avto, ki vas zanima: {{ izbraniAvto }}</h3>
           
           <div id="" style="margin: 1em;">
               <div ng-repeat="car in cars" style="">
                <a href="#" ng-click="izberiAvto(car.id)">
                 {{ car.brand + ": " + car.name + " (" + car.color + ")" }}
+                <span ng-if="izbraniAvto==car.id">&lt;- Izbran</span>
                 </a>
               </div>
           </div>          
+
+          <h3 ng-if="izbraniAvto>0">Kateri termin Vas zanima?</h3>
+          
+          <div id="" style="margin: 1em;">
+              <div ng-repeat="ts in timeslots" style="">
+               <div ng-if="ts.carId == izbraniAvto">
+                  <a href="#" ng-click="izberiTermin(ts.id)" ng-if="ts.reserved==false" style="color: green;">
+                        {{ ts.date + " " + ts.time + ": " + ts.location + " (" + ts.duration + " min)" }}
+                  </a><span ng-if="izbraniTermin==ts.id">&lt;- Izbran</span>
+
+                  <span ng-if="ts.reserved!=false" style="color: gray;">
+                        {{ ts.date + " " + ts.time + ": " + ts.location + " (Termin je zaseden)" }}
+                  </span>
+               </div>
+              </div>
+          </div>    
         
           
+          <div id="obrazec" ng-if="izbraniAvto>0 && izbraniTermin>0">
+            
+            <input type="hidden" name="timeslotId" value="{{ izbraniTermin }}">
+            
+            <input type="hidden" name="carId" value="{{ izbraniAvto}}">
+            
+            <p>Ime in priimek:</p>
+               <input name="stranka" ng-model="stranka" type="text" class="form-control" ng-minlength="4"
+                 ng-required="true"
+                 ng-maxlength="60"
+                 ng-trim="true"
+                 />
+            <p>email:</p>
+              <input name="email" ng-model="email" type="text" class="form-control" ng-minlength="4"
+                 ng-required="true"
+                 ng-maxlength="60"
+                 ng-trim="true"
+                 ng-pattern="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"/>
+            
+            <input type="submit" value="Rezervivraj termin" />
+            
+            {{ cfdump }}
+            
+          </div>
+          
+          <br/>
           <p>Log:</p>
           
           <pre>{{ mylog }}</pre>
