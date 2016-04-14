@@ -1,0 +1,113 @@
+<html>
+<head><title>AngularJS</title>
+      <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+<script>
+
+/*
+
+Naloga: avtomobilsko podjetje CMW (35min)
+
+    Veliko nemško podjetje CMW vas najame, da se priklopite na njihov API in prikažete podatke o seznamu prostih terminov za najem avtomobila.
+    Seznam mora omogočiti, da se uporabnik lahko prijavi na prosti termin s svojim elektronskim naslovom.
+    Navodila za api lahko najdete tej spletni strani
+      http://smartninja.betoo.si/api/CMW/docs
+
+ */
+
+angular.module('app', []);
+
+angular.module('app').controller('MainController', function($scope, $timeout, $http, $q){
+  
+  console.log("avti..");
+  
+  $scope.mylog = 'Pripravljen.';
+  
+  $scope.cars = ['Ni avtomobilov'];
+  $scope.timeslots = ['Ni terminov'];
+  $scope.reservations = ['Ni rezervacij'];
+
+  /*
+   * preberemo seznam avtov iz baze
+   */
+  function loadCars() {
+      var id = "cars";
+      $http.get('http://smartninja.betoo.si/api/CMW/'+id).then(function(success){
+        $scope.cars = success.data;
+      }, function(error){
+        alert('Napaka pri branju: ' + id);
+      });
+  }
+
+  /*
+   * preberemo seznam avtov iz baze
+   */
+  function loadTimeslots() {
+      var id = "timeslots";
+      $http.get('http://smartninja.betoo.si/api/CMW/'+id).then(function(success){
+        $scope.timeslots = success.data;
+      }, function(error){
+        alert('Napaka pri branju: ' + id);
+      });
+  }
+
+  
+  $scope.nalozi = function () {
+      console.log("load Data...");
+      loadCars();
+      loadTimeslots();
+      console.log("load Data...OK");
+  }
+
+  $scope.izberiAvto = function (id) {
+      console.log("izberiAvto..." + id);
+      loadCars();
+      loadTimeslots();
+      console.log("izberiAvto...OK");
+  }
+  
+  $scope.mylog = 'Nalagam podatke iz strežnika...';
+      loadCars();
+      loadTimeslots();  
+  $scope.mylog = 'Nalagam podatke iz strežnika...OK';
+  
+  
+});
+ 
+
+</script>
+</head>
+<body ng-app="app">
+  <div class="container">
+
+        <h2>CMW Avtohiša</h2>
+        
+        <form name="exampleForm" ng-controller="MainController" novalidate>
+                 
+          <pre>{{ cars }}</pre>
+          <pre>{{ timeslots }}</pre>
+          
+          <button class="btn btn-primary" ng-click="nalozi()">Naloži podatke</button>
+        
+          <h3>Izberite avto, ki vas zanima: </h3>
+          
+          <div id="" style="margin: 1em;">
+              <div ng-repeat="car in cars" style="">
+               <a href="#" ng-click="izberiAvto(car.id)">
+                {{ car.brand + ": " + car.name + " (" + car.color + ")" }}
+                </a>
+              </div>
+          </div>          
+        
+          
+          <p>Log:</p>
+          
+          <pre>{{ mylog }}</pre>
+        
+        </form>
+        
+  </div>
+</body>
+</html>
