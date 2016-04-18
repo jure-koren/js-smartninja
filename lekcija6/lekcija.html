@@ -1,0 +1,190 @@
+<html>
+<head><title>AngularJS</title>
+      <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+<script>
+
+/*
+
+Naloga:
+
+Podjetje Frello, za katerega ste naredili Todo tasker, vas zopet najeme, da jim pomagate iz zagate.
+Sedaj morate dodati, da se ob vsakem dodanem in odstranjenem tasku pokaže obvestilo
+v desnem zgornjem kotu (uporaba eventa ter factory).
+
+ */
+
+angular.module('app', []);
+
+angular.module('app').controller('ZgornjiController', function($scope, $timeout, $http, $rootScope, TodoFactory){
+   // bla bla
+   
+   $scope.sporocilo = "Pripravljen.";
+   
+   $scope.$on('fired.event', function(event, data){
+      console.log("Dobili smo sporocilo");
+      $scope.sporocilo = data.data; 
+      });
+});
+
+angular.module('app').controller('MainController', function($scope, $timeout, $http, $rootScope, TodoFactory){
+  
+  // main controller
+  $scope.tasks = TodoFactory.getTasks();
+  
+  $scope.newTask = {body: 'Nekaj 1', isCompleted: true, deleted: false};
+  
+  $scope.addTask = function(task)
+  {
+    TodoFactory.addTask(task);
+    // resetiramo todo
+    $scope.newTask = {body: 'Nekaj 1', isCompleted: true, deleted: false};
+  }
+  
+  $scope.reset = function()
+  {
+    TodoFactory.reset();
+  }  
+  
+});
+ 
+ 
+angular.module('app').controller('MainController2', function($scope, $timeout, $http, $rootScope, TodoFactory){
+  
+  // main controller
+  $scope.tasks = TodoFactory.getTasks();
+  
+  $scope.newTask = {body: 'Nekaj 2', isCompleted: true, deleted: false};
+  
+  $scope.addTask = function(task)
+  {
+    TodoFactory.addTask(task);
+    // resetiramo todo
+    $scope.newTask = {body: 'Nekaj 2', isCompleted: true, deleted: false};
+  }
+  
+  $scope.reset = function()
+  {
+    TodoFactory.reset();
+  }  
+  
+});
+
+
+
+//  factory
+angular.module('app').factory('TodoFactory', function($http, $rootScope)
+{
+
+  var tasks = [];
+  
+  return {
+    addTask: addTask,
+    getTasks: getTasks,
+    reset: reset
+  };
+  
+  /*
+   * return tasks
+   */
+  function getTasks()
+  {
+    return tasks;
+  }
+  
+  /*
+   * add task
+   */
+  function addTask(task)
+  {
+      console.log("TodoFactory.addTask");
+      $rootScope.$broadcast('fired.event', {data: 'Task added event ' + tasks.length });
+      tasks.push(task);
+  }
+  
+  /*
+   * brisemo vse
+   */
+  function reset()
+  {
+      console.log("TodoFactory.reset");
+      $rootScope.$broadcast('fired.event', {data: 'Task remove event ' + tasks.length });
+       
+      tasks.splice(0, tasks.length);      
+      
+      
+  }  
+  
+});
+
+</script>
+</head>
+<body ng-app="app">
+  <div class="container">
+
+      <div ng-controller="ZgornjiController">
+        <div style="float: right; border: 1px solid black; width: 20em;">{{ sporocilo }}</div>
+        
+        <h2>Frello</h2>
+
+        <div style="clear: both;">&nbsp;</div>
+        
+        <form name="exampleForm" ng-controller="MainController" novalidate style="float: left; width: 50%; height: 50%;">
+
+        Tasks:
+        <!-- {{ tasks }} !-->
+        
+        <br/>
+        <input type="text" ng-model="newTask.body" />
+        <button class="btn btn-primary" ng-click="addTask(newTask)">Dodaj</button>
+        <button class="btn btn-primary" ng-click="reset()">Briši vse</button>
+        
+            <ul>
+            <span ng-repeat="task in tasks track by $index">
+            <li  ng-if="task.isCompleted">
+              <input type="checkbox" ng-model="task.isCompleted" ng-if="task.deleted==false"/>
+    
+              {{ $index + ". " + task.body }}
+              
+              <span ng-show="task.isCompleted" class="koncano" style="color: green">
+                Končano
+              </span>
+            </li>
+            </span>
+            </ul>
+        
+        </form>
+        
+        <form name="exampleForm2" ng-controller="MainController2" novalidate style="float: left; width: 50%; height: 50%;">
+
+        Tasks 2:
+        <!-- {{ tasks }} !-->
+        
+        <br/>
+        <input type="text" ng-model="newTask.body" />
+        <button class="btn btn-primary" ng-click="addTask(newTask)">Dodaj</button>
+        <button class="btn btn-primary" ng-click="reset()">Briši vse</button>
+
+            <ul>
+            <span ng-repeat="task in tasks track by $index">
+            <li ng-if="!task.isCompleted">      
+              <input type="checkbox" ng-model="task.isCompleted" ng-if="task.deleted==false"/>
+    
+              {{ $index + ". " + task.body }}
+              
+              <span ng-show="task.isCompleted" class="koncano">
+                Končano
+              </span>
+            </li>
+            </span>
+            </ul>      
+        
+        </form>
+        
+      </div>
+        
+  </div>
+</body>
+</html>
