@@ -5,8 +5,10 @@
 
     <title>Trgovina</title>
 
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -23,30 +25,8 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-12 jumbotron">
-            <h1>Trgovina</h1>
-
-            <app-example></app-example>
-
-
-            <div class="well">
-                <!-- Navbar -->
-                <a ui-sref="home">Začetek</a>
-                
-                <a ui-sref="produkti">Produkti</a>
-                <a ui-sref="kategorije">Kategorije</a>
-                
-                <a ui-sref="pomoc">Pomoč</a>
-
-                <!-- Linking to nested state -->
-                <a ui-sref="pomoc.faq">FAQ</a>
-                <a ui-sref="pomoc.contact">Kontakt</a>
-                
-                <!-- Linking to a state with added parameters -->
-                <a ui-sref="produkt({id: '100'})">Produkt z ID 100</a>
-                <a ui-sref="kategorija({ime: 'Piki'})">Prikaži kategorijo Piki</a>
-            </div>
-
-
+            <app-navigation></app-navigation>
+            
             <!-- Load all templates and templateUrls from states into this directive -->
             <div class="well">
                 <ui-view></ui-view>

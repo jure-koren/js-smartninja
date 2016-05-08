@@ -22,6 +22,14 @@ gulp.task('move', function(){
 	.pipe(flatten())
 	.pipe(gulp.dest('./dist/templates'))
 	.pipe(notify('Moved templates'));
+	
+	//	Set the source
+	gulp.src(['./src/**/*.png', './src/**/*.jpg'])
+	//	Pipe it and store it in the dist folder
+	.pipe(flatten())	
+	.pipe(gulp.dest('./dist/images'))
+	//	Notify the user
+	.pipe(notify('Moved images'));	
 
 });
 

@@ -28,7 +28,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	$stateProvider.state('kategorije',
 	{
 		url: '/kategorije',
-		template: '<h1>Seznam kategorij</h1>'
+		template: '<app-categories></app-categories>'
 	});
 	
 	$stateProvider.state('error',
@@ -90,5 +90,39 @@ angular.module('app').directive('appExample', function(){
 		scope:{},
 		controller: 'ExampleController',
 		templateUrl: 'templates/example-template.html'
+	};
+});
+angular.module('app').controller('NavigationController', function($scope){
+
+	$scope.example = 'Jaz sem meni';
+
+});
+angular.module('app').directive('appNavigation', function(){
+	return {
+		restrict: 'E',
+		scope:{},
+		controller: 'NavigationController',
+		templateUrl: 'templates/navigation.template.html'
+	};
+});
+
+angular.module('app').controller('CategoriesController', function($scope, $q, $http){
+
+	/*
+     * naložimo kategorije
+     */
+  $http.get('http://smartninja.betoo.si/api/eshop/categories',{iskanje: 'test'}).then(function(success){
+    $scope.categories = success.data;
+  }, function(error){
+    alert('Tole ni delalo');
+  } );
+
+});
+angular.module('app').directive('appCategories', function(){
+	return {
+		restrict: 'E',
+		scope:{},
+		controller: 'CategoriesController',
+		templateUrl: 'templates/categories.template.html'
 	};
 });

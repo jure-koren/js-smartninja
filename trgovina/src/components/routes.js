@@ -26,7 +26,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	$stateProvider.state('kategorije',
 	{
 		url: '/kategorije',
-		template: '<h1>Seznam kategorij</h1>'
+		template: '<app-categories></app-categories>'
 	});
 	
 	$stateProvider.state('error',
