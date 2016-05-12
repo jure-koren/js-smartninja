@@ -1,6 +1,6 @@
 <h1>Kateri izdelki Vas zanimajo?</h1>
 
 <div ng-repeat="category in categories track by $index">
-  <p><a href='#/produkti&category_id={{ category.id }}'>{{ $index + ". " + category.category }}</a></p>
+  <p><a href='#/kategorija/{{ category.id }}'>{{ $index + ". " + category.category }}</a></p>
   <br/>
 </div>

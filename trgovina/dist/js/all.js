@@ -1,5 +1,6 @@
 //  Add ui-router as a dependency
-angular.module('app', ['ui.router']);
+angular.module('app', ['ngResource', 'ui.router'] );
+
 angular.module('app').config(function($stateProvider, $urlRouterProvider){
 
     //  If a user goes to an url that doesn't have a valid state assigned
@@ -106,18 +107,15 @@ angular.module('app').directive('appNavigation', function(){
 	};
 });
 
-angular.module('app').controller('CategoriesController', function($scope, $q, $http){
-
-	/*
-     * nalo≈æimo kategorije
-     */
-  $http.get('http://smartninja.betoo.si/api/eshop/categories',{iskanje: 'test'}).then(function(success){
-    $scope.categories = success.data;
-  }, function(error){
-    alert('Tole ni delalo');
-  } );
-
+angular.module(‘app’).factory(‘Products’, function($resource) {
+    return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
 });
+
+angular.module('app').controller('CategoriesController', function($scope, Categories) {
+    $scope.categories = Categories.query();
+});
+ 
+
 angular.module('app').directive('appCategories', function(){
 	return {
 		restrict: 'E',
@@ -126,3 +124,9 @@ angular.module('app').directive('appCategories', function(){
 		templateUrl: 'templates/categories.template.html'
 	};
 });
+angular.module(‘app’).factory(
+                            Categories,
+                            function($resource) {
+                                return $resource('http://smartninja.betoo.si/api/eshop/categories/:id');
+                            }
+);
