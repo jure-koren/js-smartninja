@@ -1,2 +1,2 @@
 //  Add ui-router as a dependency
-angular.module('app', ['ui.router']);
+angular.module('app', ['ngResource', 'ui.router'] );
