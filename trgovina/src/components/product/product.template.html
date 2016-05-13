@@ -1,0 +1,11 @@
+<div ng-repeat="product in products | filter: { id: id }">
+  <div class="product col-md-4">
+    <a href='#/produkt/{{ product.id }}'>
+      <b>{{ product.name }}</b>
+      <i>{{ product.brand }}</i>
+      <u>{{ product.price }}</u>
+      <img src="{{ product.image }}" width="100%"/>
+    
+    </a>
+  </div>
+</div>

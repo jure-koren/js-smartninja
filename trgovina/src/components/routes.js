@@ -9,12 +9,6 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 		template: '<h1>Dobrodošli v trgovini</h1>'
 	});
 
-	$stateProvider.state('home2',
-	{
-		url: '',
-		template: '<h1>Dobrodošli v trgovini</h1>'
-	});
-
 	
 	$stateProvider.state('produkti',
 	{
@@ -29,11 +23,25 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 		template: '<app-categories></app-categories>'
 	});
 	
-	$stateProvider.state('error',
-	{
-		url: '/error',
-		template: '<h2>Error 404</h2>'
+	$stateProvider.state('produkt', {
+		url: '/produkt/:id',
+		template: '<h1>Prikaz izdelka</h1><app-product id="{{ id }}"></app-product>',
+		controller: function($scope, $stateParams, $state){
+			//  Use $stateParams to get url parameters
+			$scope.id = $stateParams.id;
+		}
 	});
+	
+	$stateProvider.state('kategorija', {
+		url: '/kategorija/:categoryId',
+		template: '<app-category category-id="{{ categoryId }}"></app-category>',
+		controller: function($scope, $stateParams, $state){
+			//  Use $stateParams to get url parameters
+			$scope.categoryId = $stateParams.categoryId;
+		}
+	});
+	
+	
 
 	$stateProvider.state('pomoc',
 	{
@@ -53,24 +61,12 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	})	
 	
 
-	$stateProvider.state('produkt', {
-		url: '/produkt/:id',
-		template: '<h1>Izbrali ste produkt</h1><p>ID : {{ id }}</p>',
-		controller: function($scope, $stateParams, $state){
-		//  Use $stateParams to get url parameters
-		$scope.id = $stateParams.id;
 
-		}
-	});
 	
-	$stateProvider.state('kategorija', {
-		url: '/kategorija/:ime',
-		template: '<h1>Izbrali ste kategorijo produktov</h1><p>Ime : {{ ime }}</p>',
-		controller: function($scope, $stateParams, $state){
-		//  Use $stateParams to get url parameters
-		$scope.ime = $stateParams.ime;
-
-		}
+	$stateProvider.state('error',
+	{
+		url: '/error',
+		template: '<h2>Error 404</h2>'
 	});	
 	
 

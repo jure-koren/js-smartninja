@@ -1,0 +1,7 @@
+<h1>Pregled kategorije izdelkov</h1>
+<p>Izbrana kategorija: {{ categoryId }}, filter: {{ filterCategoryId }}</p>
+
+<div ng-repeat="product in products | filter: { categoryId: categoryId }">
+  <app-product id="{{ product.id }}"></app-product>
+  
+</div>
