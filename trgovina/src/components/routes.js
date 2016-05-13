@@ -19,7 +19,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	$stateProvider.state('produkti',
 	{
 		url: '/produkti',
-		template: '<h1>Seznam produktov bo tu</h1>'
+		template: '<app-products></app-products>'
 	});
 
 	

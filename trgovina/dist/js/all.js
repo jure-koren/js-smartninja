@@ -22,7 +22,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	$stateProvider.state('produkti',
 	{
 		url: '/produkti',
-		template: '<h1>Seznam produktov bo tu</h1>'
+		template: '<app-products></app-products>'
 	});
 
 	
@@ -107,7 +107,20 @@ angular.module('app').directive('appNavigation', function(){
 	};
 });
 
-angular.module(‘app’).factory(‘Products’, function($resource) {
+angular.module('app').controller('ProductsController', function($scope, Products) {
+    $scope.products = Products.query();
+});
+ 
+
+angular.module('app').directive('appProducts', function(){
+	return {
+		restrict: 'E',
+		scope:{},
+		controller: 'ProductsController',
+		templateUrl: 'templates/products.template.html'
+	};
+});
+angular.module("app").factory("Products", function($resource) {
     return $resource('http://smartninja.betoo.si/api/eshop/products/:id');
 });
 
@@ -124,9 +137,9 @@ angular.module('app').directive('appCategories', function(){
 		templateUrl: 'templates/categories.template.html'
 	};
 });
-angular.module(‘app’).factory(
-                            Categories,
+angular.module("app").factory(
+                            "Categories",
                             function($resource) {
-                                return $resource('http://smartninja.betoo.si/api/eshop/categories/:id');
+                                return $resource("http://smartninja.betoo.si/api/eshop/categories/:id");
                             }
 );
