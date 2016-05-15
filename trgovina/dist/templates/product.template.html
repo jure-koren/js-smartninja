@@ -1,11 +1,26 @@
 <div ng-repeat="product in products | filter: { id: id }">
+
+
   <div class="product col-md-4">
-    <a href='#/produkt/{{ product.id }}'>
-      <b>{{ product.name }}</b>
-      <i>{{ product.brand }}</i>
-      <u>{{ product.price }}</u>
+    
+      Izdelek: <b>{{ product.name }}</b> <br/>
+      Proizvajalec: <i>{{ product.brand }}</i> <br/><br/>
+      Cena: <u>{{ product.price }} €</u> <br/><br/>
+      Opis: <i>{{ product.description }} </i> <br/><br/>
+    
+    <ngcart-addtocart id="{{ product.id }}"
+                      name="{{ product.name }}"
+                      price="{{ product.price }}"
+                      quantity="1"
+                      quantity-max="{{ product.stock }}">V košarico</ngcart-addtocart>
+  </div>
+
+  <div class="product col-md-4">
+    <a href='#'>
+
       <img src="{{ product.image }}" width="100%"/>
     
     </a>
-  </div>
+  </div>  
+  
 </div>

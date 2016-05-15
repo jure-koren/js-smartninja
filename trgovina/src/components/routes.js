@@ -1,7 +1,7 @@
 angular.module('app').config(function($stateProvider, $urlRouterProvider){
 
     //  If a user goes to an url that doesn't have a valid state assigned
-	$urlRouterProvider.otherwise('/error');
+	$urlRouterProvider.otherwise('/');
 
 	$stateProvider.state('home',
 	{
@@ -12,8 +12,11 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	
 	$stateProvider.state('produkti',
 	{
-		url: '/produkti',
-		template: '<app-products></app-products>'
+		url: '/produkti/:find',
+		template: '<app-products find="{{ find }}""></app-products>',
+		controller: function($scope, $stateParams, $state){
+			$scope.find = $stateParams.find;
+		}		
 	});
 
 	
@@ -25,9 +28,8 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	
 	$stateProvider.state('produkt', {
 		url: '/produkt/:id',
-		template: '<h1>Prikaz izdelka</h1><app-product id="{{ id }}"></app-product>',
+		template: '<h1 class="izdelek-{{ id }}">Prikaz izdelka</h1><app-product id="{{ id }}"></app-product>',
 		controller: function($scope, $stateParams, $state){
-			//  Use $stateParams to get url parameters
 			$scope.id = $stateParams.id;
 		}
 	});
@@ -36,12 +38,16 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 		url: '/kategorija/:categoryId',
 		template: '<app-category category-id="{{ categoryId }}"></app-category>',
 		controller: function($scope, $stateParams, $state){
-			//  Use $stateParams to get url parameters
 			$scope.categoryId = $stateParams.categoryId;
 		}
 	});
 	
 	
+
+	$stateProvider.state('cart', {
+		url: '/cart',
+		template: '<ngcart-cart></ngcart-cart>'
+	});
 
 	$stateProvider.state('pomoc',
 	{

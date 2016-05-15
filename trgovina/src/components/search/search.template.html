@@ -1,0 +1,8 @@
+<input type="text"
+       placeholder="Iskanje"
+       ng-model="selected"
+       uib-typeahead="item as item.name for item in getItems($viewValue)"
+       class="form-control"
+       typeahead-min-length="1"
+       typeahead-on-select="onSelect($item, $model, $label)"/>
+       >

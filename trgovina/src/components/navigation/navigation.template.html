@@ -15,29 +15,31 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a ui-sref="home">Začetek <span class="sr-only">(current)</span></a></li>
+        <li ui-sref-active="active" class=""><a ui-sref="home">Začetek <span class="sr-only">(current)</span></a></li>
         
-        <li><a ui-sref="kategorije">Kategorije</a></li>
-        <li><a ui-sref="produkti">Produkti</a></li>
+        <li ui-sref-active="active" class=""><a ui-sref="kategorije">Kategorije</a></li>
+        <li ui-sref-active="active" class=""><a ui-sref="produkti">Produkti</a></li>
         
-        <li><a ui-sref="kategorija({ime: 'new'})">Novosti</a></li>
-        <li><a ui-sref="produkt({id: '100'})">Izdelek dneva</a></li>        
+        <li ui-sref-active="active" class=""><a ui-sref="kategorija({ime: 'new'})">Novosti</a></li>
+        <li ui-sref-active="active" class=""><a ui-sref="cart">Košarica</a></li>
 
       </ul>
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Iskanje">
+          <app-search scope="products"></app-search>
         </div>
-        <button type="submit" class="btn btn-default">Najdi</button>
       </form>
+
+
+      
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pomoč <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a ui-sref="pomoc.faq">FAQ</a></li>
-            <li><a ui-sref="pomoc.terms">Pogoji poslovanja</a></li>
-            <li><a ui-sref="pomoc.map">Kje smo</a></li>
-            <li><a ui-sref="pomoc.contact">Kontakt</a></li>
+            <li ui-sref-active="active" class=""><a ui-sref="pomoc.faq">FAQ</a></li>
+            <li ui-sref-active="active" class=""><a ui-sref="pomoc.terms">Pogoji poslovanja</a></li>
+            <li ui-sref-active="active" class=""><a ui-sref="pomoc.map">Kje smo</a></li>
+            <li ui-sref-active="active" class=""><a ui-sref="pomoc.contact">Kontakt</a></li>
           </ul>
         </li>
       </ul>

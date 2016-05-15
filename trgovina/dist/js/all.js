@@ -1,10 +1,10 @@
 //  Add ui-router as a dependency
-angular.module('app', ['ngResource', 'ui.router', 'ui.bootstrap', 'angular-locker', 'ngCachedResource'] );
+angular.module('app', ['ngResource', 'ui.router', 'ui.bootstrap', 'angular-locker', 'ngCachedResource', 'ngCart'] );
 
 angular.module('app').config(function($stateProvider, $urlRouterProvider){
 
     //  If a user goes to an url that doesn't have a valid state assigned
-	$urlRouterProvider.otherwise('/error');
+	$urlRouterProvider.otherwise('/');
 
 	$stateProvider.state('home',
 	{
@@ -15,8 +15,11 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	
 	$stateProvider.state('produkti',
 	{
-		url: '/produkti',
-		template: '<app-products></app-products>'
+		url: '/produkti/:find',
+		template: '<app-products find="{{ find }}""></app-products>',
+		controller: function($scope, $stateParams, $state){
+			$scope.find = $stateParams.find;
+		}		
 	});
 
 	
@@ -28,9 +31,8 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	
 	$stateProvider.state('produkt', {
 		url: '/produkt/:id',
-		template: '<h1>Prikaz izdelka</h1><app-product id="{{ id }}"></app-product>',
+		template: '<h1 class="izdelek-{{ id }}">Prikaz izdelka</h1><app-product id="{{ id }}"></app-product>',
 		controller: function($scope, $stateParams, $state){
-			//  Use $stateParams to get url parameters
 			$scope.id = $stateParams.id;
 		}
 	});
@@ -39,12 +41,16 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 		url: '/kategorija/:categoryId',
 		template: '<app-category category-id="{{ categoryId }}"></app-category>',
 		controller: function($scope, $stateParams, $state){
-			//  Use $stateParams to get url parameters
 			$scope.categoryId = $stateParams.categoryId;
 		}
 	});
 	
 	
+
+	$stateProvider.state('cart', {
+		url: '/cart',
+		template: '<ngcart-cart></ngcart-cart>'
+	});
 
 	$stateProvider.state('pomoc',
 	{
@@ -136,8 +142,11 @@ angular.module('app').directive('appNavigation', function(){
 	};
 });
 
-angular.module('app').controller('ProductController', function($scope, Products) {
+angular.module('app').controller('ProductController', function($scope, Products, ngCart) {
     $scope.products = Products.query();
+    
+    ngCart.setTaxRate(0.0);
+    ngCart.setShipping(2.99);      
 });
  
 
@@ -151,6 +160,16 @@ angular.module('app').directive('appProduct', function(){
 		templateUrl: 'templates/product.template.html'
 	};
 });
+angular.module('app').directive('appSmallProduct', function(){
+	return {
+		restrict: 'E',
+		scope:{
+			id:'@'
+			},
+		controller: 'ProductController',
+		templateUrl: 'templates/smallproduct.template.html'
+	};
+});
 
 angular.module('app').controller('ProductsController', function($scope, Products) {
     $scope.products = Products.query();
@@ -160,7 +179,9 @@ angular.module('app').controller('ProductsController', function($scope, Products
 angular.module('app').directive('appProducts', function(){
 	return {
 		restrict: 'E',
-		scope:{},
+		scope:{
+			find:'@'
+			},
 		controller: 'ProductsController',
 		templateUrl: 'templates/products.template.html'
 	};
@@ -170,4 +191,32 @@ angular.module('app').directive('appProducts', function(){
 });*/
 angular.module("app").factory("Products", function($cachedResource) {
     return $cachedResource('Products', 'http://smartninja.betoo.si/api/eshop/products/:id', {id: "@id"});
+});
+angular.module('app').controller('SearchController', function($scope, Products, $http, $state){
+
+/*
+    $scope.getItems = function(query){
+        return $http.get('http://smartninja.betoo.si/api/eshop/products', {params:{query : query}}).then(function(response)
+                                                                                                         {
+                                                                                                             return response.data;
+                                                                                                         })
+    };
+  */  
+    $scope.onSelect = function ($item, $model, $label) {
+        var id = $item.id;
+        $state.go("produkt",  { "id": id} );
+        
+    };    
+
+    $scope.getItems = function (query) {
+        return Products.query({ query: query }).$promise;
+    };
+  
+});
+angular.module('app').directive('appSearch', function(){
+	return {
+		restrict: 'E',
+		controller: 'SearchController',
+		templateUrl: 'templates/search.template.html'
+	};
 });
