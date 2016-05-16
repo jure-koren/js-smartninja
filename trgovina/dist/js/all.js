@@ -9,7 +9,7 @@ angular.module('app').config(function($stateProvider, $urlRouterProvider){
 	$stateProvider.state('home',
 	{
 		url: '/',
-		template: '<h1>Dobrodošli v trgovini</h1>'
+		template: '<h1>Dobrodošli v trgovini</h1><p><a ui-sref="kategorije">Pregled kategorij izdelkov</a></p>'
 	});
 
 	
