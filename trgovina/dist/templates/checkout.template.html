@@ -1,0 +1,30 @@
+<h3>Nakup</h3>
+
+<form role="form">
+ <div class="form-group">
+   <label for="ime_priimek">Ime in priimek:</label>
+   <input type="ime_priimek" class="form-control" id="ime_priimek" ng-model="ime_priimek">
+ </div>
+ <div class="form-group">
+   <label for="naziv">Naziv podjetja:</label>
+   <input type="naziv" class="form-control" id="naziv" ng-model="naziv">
+ </div>
+ <div class="form-group">
+   <label for="ulica">Ulica in hišna št.:</label>
+   <input type="ulica" class="form-control" id="ulica" ng-model="ulica">
+ </div> 
+ <div class="form-group">
+   <label for="kraj">Pošta in kraj:</label>
+   <input type="kraj" class="form-control" id="kraj" ng-model="kraj">
+ </div> 
+ <div class="form-group">
+   <label for="drzava">Država:</label>
+   <input type="drzava" class="form-control" id="drzava" ng-model="drzava">
+ </div> 
+ 
+ <button type="submit" class="btn btn-default" ng-click="doCheckout()">Oddaja naročila</button>
+ 
+ <br/><br/>
+  <button type="submit" class="btn btn-default" ng-click="loadData()">Naloži iz lockerja</button>
+  <button type="submit" class="btn btn-default" ng-click="clearData()">Zbriši podatke</button>
+</form>

@@ -128,6 +128,83 @@ angular.module("app").factory(
                                 return $resource("http://smartninja.betoo.si/api/eshop/categories/products/:id");
                             }
 );
+
+angular.module('app').controller('CheckoutController', function($scope, ngCart, locker) {
+
+    // skupne variable
+    var prefix = "myapp_";
+    var polja = ["ime_priimek", "naziv", "ulica", "kraj", "drzava"];
+    
+    
+    /*
+     * naložimo iz lockerja, če imamo vrednosti od prej
+     */
+    $scope.loadData = function() {
+        polja.forEach(function(polje) {
+        var sPolje = eval("$scope." + polje);
+        sPolje = locker.get(prefix + 'ime_priimek', '' );
+        });
+    }
+    $scope.loadData();
+    
+    /*
+     * naredimo checkout
+     */
+    $scope.doCheckout = function() {
+        // tu še preverimo, če je vse ok
+        
+        // shranimo polja v locker
+        polja.forEach(function(polje) {
+            locker.put(prefix + polje, eval("$scope." + polje) );
+        });
+        
+        // pošljemo naročilo na server - promise
+        
+        
+    };
+    
+    /*
+     * zbrišemo
+     */
+    $scope.clearData = function() {
+        polja.forEach(function(polje) {
+            var sPolje = eval("$scope." + polje);
+            sPolje = '';
+        });
+        locker.empty();
+    }
+    
+    
+});
+ 
+
+angular.module('app').directive('appCheckout', function(){
+	return {
+		restrict: 'E',
+		scope:{
+			find:'@'
+			},
+		controller: 'CheckoutController',
+		templateUrl: 'templates/checkout.template.html'
+	};
+});
+
+angular.module('app').controller('HelpController', function($scope) {
+    // ok
+});
+ 
+
+angular.module('app').directive('appHelp', function(){
+	return {
+		restrict: 'E',
+		scope:{
+			find:'@'
+			},
+		controller: 'HelpController',
+		templateUrl: 'templates/help.template.html'
+	};
+});
+
 angular.module('app').controller('NavigationController', function($scope){
 
 	$scope.example = 'Jaz sem meni';

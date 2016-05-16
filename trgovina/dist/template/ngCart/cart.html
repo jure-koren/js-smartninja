@@ -1,6 +1,6 @@
 
 <div class="alert alert-warning" role="alert" ng-show="ngCart.getTotalItems() === 0">
-    Košarica je prazna.
+    Košarica je prazna. Najprej si izberite izdelke.
 </div>
 
 <div class="table-responsive col-lg-12" ng-show="ngCart.getTotalItems() > 0">
@@ -21,7 +21,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
+            <td>Davek ({{ ngCart.getTaxRate() }}%):</td>
             <td>{{ ngCart.getTax() | currency:"€" }}</td>
         </tr>
         <tr ng-show="ngCart.getShipping()">
@@ -35,7 +35,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Skupaj:</td>
+            <td>Za plačilo:</td>
             <td>{{ ngCart.totalCost() | currency:"€" }}</td>
         </tr>
         </tfoot>
@@ -53,6 +53,8 @@
         </tr>
         </tbody>
     </table>
+    
+    <app-checkout></app-checkout>
 </div>
 <style>
     .ngCart.cart span[ng-click] {
@@ -62,4 +64,3 @@
         color:#aaa;
     }
 </style>
-<ngcart-checkout service="http" settings="{ url:'#/checkout' }"></ngcart-checkout>
