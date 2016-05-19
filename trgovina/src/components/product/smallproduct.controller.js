@@ -1,6 +1,5 @@
 
-angular.module('app').controller('ProductController', function($scope, Products, ngCart) {
-    
+angular.module('app').controller('SmallProductController', function($scope, Products, ngCart) {
     //$scope.products = Products.query;
     //console.log("Product ID" + $scope.id);
     
@@ -13,7 +12,8 @@ angular.module('app').controller('ProductController', function($scope, Products,
     p.$httpPromise.then(function() {
       //console.log('From server:', p);
       $scope.products = [p];
-    });    
-     
+    });
+    
+      
 });
  

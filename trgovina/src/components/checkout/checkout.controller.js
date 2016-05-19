@@ -3,17 +3,17 @@ angular.module('app').controller('CheckoutController', function($scope, ngCart, 
 
     // skupne variable
     var prefix = "myapp_";
-    var polja = ["ime_priimek", "naziv", "ulica", "kraj", "drzava"];
     
+    $scope.user = {ime_priimek:"", nayziv:"", ulica: "", kraj: "", drzava: ""};
+    
+    ngCart.setTaxRate(0.0);
+    ngCart.setShipping(2.99);
     
     /*
      * naložimo iz lockerja, če imamo vrednosti od prej
      */
     $scope.loadData = function() {
-        polja.forEach(function(polje) {
-        var sPolje = eval("$scope." + polje);
-        sPolje = locker.get(prefix + 'ime_priimek', '' );
-        });
+        $scope.user = locker.get(prefix + "user");
     }
     $scope.loadData();
     
@@ -21,26 +21,38 @@ angular.module('app').controller('CheckoutController', function($scope, ngCart, 
      * naredimo checkout
      */
     $scope.doCheckout = function() {
-        // tu še preverimo, če je vse ok
+        // shranimo z lockerjem
+        locker.put(prefix + "user", $scope.user );
         
-        // shranimo polja v locker
-        polja.forEach(function(polje) {
-            locker.put(prefix + polje, eval("$scope." + polje) );
+        // pripravimo podatke za poslati na server
+        var data = $scope.user;
+        // dodamo products
+        // rabimo še products (id, quantity)
+        var products = {};
+        ngCart.getItems.forEach(function(ngCartItem) {
+            var item = {id: ngCartItem.getId, quantity: ngCartItem.getQuantity };
+            products.push(item);
         });
+        // spravimo v data
+        data.products = products;
         
         // pošljemo naročilo na server - promise
+        var res = $http.post('http://smartninja.betoo.si/api/eshop/orders', data);
+                        res.success(function(data, status, headers, config) {
+                                $scope.message = data;
+                                alert("Poslano OK!");
+                        });
+                        res.error(function(data, status, headers, config) {
+                                alert( "failure message: " + JSON.stringify({data: data}));
+                        });        
         
-        
+        alert("Test OK");
     };
     
     /*
      * zbrišemo
      */
     $scope.clearData = function() {
-        polja.forEach(function(polje) {
-            var sPolje = eval("$scope." + polje);
-            sPolje = '';
-        });
         locker.empty();
     }
     

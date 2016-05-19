@@ -1,0 +1,25 @@
+
+
+.animate.ng-enter {
+	-webkit-transition: 3s linear all; /* Chrome */
+	transition: 3s linear all;
+	opacity: 0;
+        background-color: orange;
+}
+ 
+.animate.ng-enter.ng-enter-active {
+	opacity: 1;
+        background-color: blue;
+}
+
+.animate2-enter, .animate2-leave {
+transition: 500ms ease-in all;
+position: relative;
+display: block;
+} 
+.animate2-enter.animate2-enter-active, .animate2-leave {
+left: 0;
+}
+.animate2-leave.animate2-leave-active, .animate2-enter {
+left: 500px;
+}

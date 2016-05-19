@@ -15,6 +15,12 @@ gulp.task('move', function(){
 	//	Notify the user
 	.pipe(notify('Moved index.html'));
 
+        //      Set the source
+        gulp.src(['./src/styles.css'])
+        //      Pipe it and store it in the dist folder
+        .pipe(gulp.dest('./dist'))
+        //      Notify the user
+        .pipe(notify('Moved styles.css'));
 
 	// Set the source. You can exclude files with !
 	gulp.src(['!./src/index.html', './src/**/*.html'])

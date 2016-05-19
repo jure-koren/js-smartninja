@@ -2,9 +2,10 @@ angular.module('app').directive('appSmallProduct', function(){
 	return {
 		restrict: 'E',
 		scope:{
-			id:'@'
+			id:'@',
+			product:'@'
 			},
-		controller: 'ProductController',
+		controller: 'SmallProductController',
 		templateUrl: 'templates/smallproduct.template.html'
 	};
 });
